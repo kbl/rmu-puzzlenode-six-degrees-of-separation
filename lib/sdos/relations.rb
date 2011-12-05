@@ -11,6 +11,8 @@ module Sdos
       parser.parse do |tweet|
         self.<<(tweet)
       end
+
+      #@relation_graph = @relation_graph.strongly_connected_components
     end
 
     def [](name)
