@@ -22,7 +22,9 @@ module Sdos
       relations = Relations.new(TweetParser.new(input))
 
       relations['emily'].should == ['duncan']
-      relations['christie'].should be_empty
+      lambda do
+        relations['christie'].should be_empty
+      end.should raise_error(RGL::NoVertexError)
     end
   end
 end
