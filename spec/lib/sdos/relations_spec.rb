@@ -41,6 +41,18 @@ module Sdos
         relations.friends('a').should == { 'b' => 1 }
         relations.friends('b').should == { 'a' => 1 }
       end
+      it 'should mention transitive friends' do
+        pending
+        input = StringIO.new <<-EOS
+          a: @b @c
+          b: @a
+          c: @a
+        EOS
+        relations = Relations.new(TweetParser.new(input))
+
+        relations.friends('a').should == { 'b' => 1, 'c' => 1 }
+        relations.friends('b').should == { 'a' => 1, 'c' => 2 }
+      end
     end
 
   end
