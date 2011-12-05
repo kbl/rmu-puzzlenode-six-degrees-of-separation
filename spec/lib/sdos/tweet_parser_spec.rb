@@ -25,5 +25,23 @@ module Sdos
         tweet.mentioned.should contain(%w(bob nella_hackett))
       end
     end
+    describe 'TweetParser#parse' do
+      it 'should be possible to parse file line by line' do
+        input = StringIO.new <<-EOS
+          emily: Ain't that the truth /cc @christie
+          duncan: hey @farid, can you pick up some of those cookies on your way home?
+          farid: @duncan, might have to work late tonight, but I'll try
+        EOS
+        parser = TweetParser.new(input)
+
+        tweets = []
+        parser.parse do |tweet|
+          tweets << tweet
+        end
+
+        tweets.should_not be_empty
+        p tweets
+      end
+    end
   end
 end

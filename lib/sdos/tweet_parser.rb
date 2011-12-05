@@ -20,5 +20,15 @@ module Sdos
       end
     end
 
+    def initialize(input)
+      @input = input
+    end
+
+    def parse(&block)
+      @input.each_line do |line|
+        yield TweetParser.parse_tweet(line)
+      end
+    end
+
   end
 end
