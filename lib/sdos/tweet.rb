@@ -7,5 +7,9 @@ module Sdos
       @author, @mentioned = author, Set.new(mentioned)
     end
 
+    def to_s
+      "#{@author}: #{@mentioned.to_a}"
+    end
+
   end
 end
