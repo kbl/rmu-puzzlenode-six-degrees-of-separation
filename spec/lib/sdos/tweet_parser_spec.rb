@@ -24,6 +24,13 @@ module Sdos
         tweet.author.should == 'madelyn'
         tweet.mentioned.should contain(%w(bob nella_hackett))
       end
+      it 'should trim whitesigns from author' do
+        input = '  madelyn: It began with Henry VII'
+        tweet = TweetParser.parse_tweet(input)
+
+        tweet.author.should == 'madelyn'
+        tweet.mentioned.should be_empty
+      end
     end
     describe 'TweetParser#parse' do
       it 'should be possible to parse file line by line' do

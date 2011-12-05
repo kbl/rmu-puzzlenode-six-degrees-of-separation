@@ -16,7 +16,7 @@ module Sdos
           tweet_body = match_data.post_match
         end
 
-        Tweet.new(author, mentioned)
+        Tweet.new(author.strip, mentioned)
       end
     end
 
