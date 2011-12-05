@@ -20,6 +20,26 @@ module Sdos
       @relation_graph.adjacent_vertices(name)
     end
 
+    def friends(name)
+      visited, unvisited = initialize_visited_unvisited(name)
+
+      unvisited.each do |vertex|
+        vertex_cost = visited[vertex]
+        adjacent_vertices = self.[](vertex)
+
+        adjacent_vertices.each do |adjacent|
+          adjacent_cost = visited[adjacent] 
+          if adjacent_cost == 0
+            visited[adjacent] = 1
+          else
+
+          end
+        end
+      end
+
+      visited
+    end
+
     protected
 
     def <<(tweet)
@@ -53,5 +73,17 @@ module Sdos
 
       reversed
     end
+
+    def initialize_visited_unvisited(name)
+      visited = {}
+
+      unvisited = @relation_graph.to_a
+      unvisited.delete(name)
+      unvisited.each { |v| visited[v] = 0 }
+      unvisited.unshift(name)
+
+      [visited, unvisited]
+    end
+
   end
 end
