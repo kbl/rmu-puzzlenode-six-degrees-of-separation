@@ -47,7 +47,7 @@ module Sdos
         end
 
         tweets.should_not be_empty
-        p tweets
+        tweets.size.should == 3
       end
     end
   end
