@@ -42,7 +42,6 @@ module Sdos
         relations.friends('b').should == { 'a' => 1 }
       end
       it 'should mention transitive friends' do
-        pending
         input = StringIO.new <<-EOS
           a: @b @c
           b: @a

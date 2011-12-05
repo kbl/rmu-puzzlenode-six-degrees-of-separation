@@ -22,19 +22,25 @@ module Sdos
 
     def friends(name)
       visited, unvisited = initialize_visited_unvisited(name)
+      visited[name] = 0
+      vertex = name
 
-      unvisited.each do |vertex|
+      until unvisited.empty? do
         vertex_cost = visited[vertex]
-        adjacent_vertices = self.[](vertex)
+        adjacent = self.[](vertex)
+        adjacent_unvisited = adjacent & unvisited
 
-        adjacent_vertices.each do |adjacent|
-          adjacent_cost = visited[adjacent] 
-          if adjacent_cost == 0
-            visited[adjacent] = 1
-          else
-
+        adjacent_unvisited.each do |adjacent_vertex|
+          adjacent_cost = visited[adjacent_vertex] 
+          new_path_cost = vertex_cost + 1
+          if adjacent_cost.nil?
+            visited[adjacent_vertex] = new_path_cost
+          elsif adjacent_cost > new_path_cost
+            visited[adjacent_vertex] = new_path_cost
           end
         end
+        unvisited.delete(vertex)
+        p visited
       end
 
       visited
@@ -79,7 +85,7 @@ module Sdos
 
       unvisited = @relation_graph.to_a
       unvisited.delete(name)
-      unvisited.each { |v| visited[v] = 0 }
+      unvisited.each { |v| visited[v] = nil }
       unvisited.unshift(name)
 
       [visited, unvisited]
