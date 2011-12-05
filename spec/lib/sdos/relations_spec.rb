@@ -3,7 +3,6 @@ require 'spec_helper'
 module Sdos
   describe Relations do
     it 'should kepp track of bidirectional relations' do
-      pending
       input = StringIO.new <<-EOS
         emily: Ain't that the truth /cc @duncan
         duncan: hey @emily, can you pick up some of those cookies on your way home?
