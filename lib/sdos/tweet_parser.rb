@@ -1,15 +1,21 @@
 module Sdos
   class TweetParser
 
-    TWEET_PATTERN = /([a-z]*):.*?(@([a-z]*).*?)*/i
+    AUTHOR_SEPARATOR = ':'
+    USER_PATTERN = /@(\w*)/
 
     class << self
       def parse_tweet(tweet)
         x = {}
-        match_data = TWEET_PATTERN.match(tweet)
-        p match_data
-        x[:author] = match_data[1]
-        x[:mentioned] = match_data.to_a.slice(2..-1)
+        mentioned = []
+
+        x[:author], tweet_body = tweet.split(AUTHOR_SEPARATOR)
+        x[:mentioned] = mentioned
+
+        while(match_data = USER_PATTERN.match(tweet_body)) 
+          mentioned << $1
+          tweet_body = match_data.post_match
+        end
 
         x
       end
