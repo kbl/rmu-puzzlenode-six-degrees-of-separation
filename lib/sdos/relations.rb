@@ -41,6 +41,7 @@ module Sdos
       lonely_vertices = comp_map.select { |index, array| array.size < 2 }.map { |i, a| a }.flatten
 
       lonely_vertices.each { |v| @relation_graph.remove_vertex(v) }
+      @relation_graph = @relation_graph.to_undirected
     end
 
     def reverse_map(map)
