@@ -1,3 +1,5 @@
+require 'sdos/tweet'
+
 module Sdos
   class TweetParser
 
@@ -6,18 +8,15 @@ module Sdos
 
     class << self
       def parse_tweet(tweet)
-        x = {}
         mentioned = []
-
-        x[:author], tweet_body = tweet.split(AUTHOR_SEPARATOR)
-        x[:mentioned] = mentioned
+        author, tweet_body = tweet.split(AUTHOR_SEPARATOR)
 
         while(match_data = USER_PATTERN.match(tweet_body)) 
           mentioned << $1
           tweet_body = match_data.post_match
         end
 
-        x
+        Tweet.new(author, mentioned)
       end
     end
 
