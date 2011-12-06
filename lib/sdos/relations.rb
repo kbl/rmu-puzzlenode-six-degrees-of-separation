@@ -42,7 +42,8 @@ module Sdos
 
         @unvisited.delete(vertex)
         @unvisited.sort do |a, b| 
-          @visited[a] <=> @visited[b]
+          result = @visited[a] <=> @visited[b]
+          result || -1
         end
         vertex = @unvisited.shift
       end
