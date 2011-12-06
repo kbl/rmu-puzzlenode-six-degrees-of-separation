@@ -2,20 +2,18 @@ module Sdos
   class DijkstrasAlg
 
     def initialize(graph, name)
-      @graph = graph
-      @name = name
+      @graph, @name, @vertex = graph, name, name
     end
 
     def find_shortest_paths
       return @visited if @visited
 
       initialize_visited_unvisited
-      vertex = @name
 
       until @unvisited.empty? do
-        vertex_cost = @visited[vertex]
+        vertex_cost = @visited[@vertex]
 
-        adjacent_and_unvisited(vertex).each do |adjacent_vertex|
+        adjacent_and_unvisited.each do |adjacent_vertex|
           adjacent_cost = @visited[adjacent_vertex] 
           new_path_cost = vertex_cost + 1
           if adjacent_cost.nil?
@@ -25,8 +23,8 @@ module Sdos
           end
         end
 
-        @unvisited.delete(vertex)
-        vertex = find_nearest_vertex
+        @unvisited.delete(@vertex)
+        find_nearest_vertex
       end
 
       @visited.delete(@name)
@@ -45,8 +43,8 @@ module Sdos
       @unvisited.unshift(@name)
     end
 
-    def adjacent_and_unvisited(vertex)
-      adjacent = @graph.adjacent_vertices(vertex)
+    def adjacent_and_unvisited
+      adjacent = @graph.adjacent_vertices(@vertex)
       adjacent & @unvisited
     end
 
@@ -55,7 +53,7 @@ module Sdos
         result = @visited[a] <=> @visited[b]
         result || -1
       end
-      @unvisited.shift
+      @vertex = @unvisited.shift
     end
 
   end
