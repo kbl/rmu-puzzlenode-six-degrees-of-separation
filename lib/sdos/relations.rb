@@ -1,5 +1,6 @@
 require 'rgl/adjacency'
 require 'rgl/connected_components'
+require 'rgl/dot'
 
 module Sdos
   class Relations
@@ -12,8 +13,12 @@ module Sdos
       parser.parse do |tweet|
         self.<<(tweet)
       end
-
+      p '===='
+      p @relation_graph
       keep_only_bidirectional_relations
+      p '----'
+      p @relation_graph
+      p '===='
     end
 
     def [](name)
