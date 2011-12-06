@@ -12,10 +12,8 @@ module Sdos
 
       until @unvisited.empty? do
         vertex_cost = @visited[vertex]
-        adjacent = @graph.adjacent_vertices(vertex)
-        adjacent_unvisited = adjacent & @unvisited
 
-        adjacent_unvisited.each do |adjacent_vertex|
+        adjacent_and_unvisited(vertex).each do |adjacent_vertex|
           adjacent_cost = @visited[adjacent_vertex] 
           new_path_cost = vertex_cost + 1
           if adjacent_cost.nil?
@@ -47,6 +45,11 @@ module Sdos
       @unvisited.delete(@name)
       @unvisited.each { |v| @visited[v] = nil }
       @unvisited.unshift(@name)
+    end
+
+    def adjacent_and_unvisited(vertex)
+      adjacent = @graph.adjacent_vertices(vertex)
+      adjacent & @unvisited
     end
 
   end
