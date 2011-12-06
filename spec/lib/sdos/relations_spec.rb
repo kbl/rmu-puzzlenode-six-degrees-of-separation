@@ -44,6 +44,26 @@ module Sdos
         relations['b'].should == %w(c)
         relations['c'].should == %w(a b)
       end
+      it 'shouldnt remove f as its bidirectionally contected with d' do
+        input = StringIO.new <<-EOS
+          a: @b
+          b: @a
+          a: @c
+          c: @a @b
+          b: @d @c
+          d: @b
+          a: @d
+          e: @d
+          d: @e
+          c: @e
+          e: @c
+          d: @f
+          f: @d
+        EOS
+        relations = Relations.new(TweetParser.new(input))
+
+        relations['d'].should == %(b e f)
+      end
     end
 
     describe 'Relations#friends' do
