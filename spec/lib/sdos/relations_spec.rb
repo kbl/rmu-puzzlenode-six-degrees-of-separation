@@ -3,10 +3,6 @@ require 'spec_helper'
 module Sdos
   describe Relations do
 
-    def path(filename)
-       File.join(File.dirname(__FILE__), filename)
-    end
-
     describe 'Relations.[]' do
       it 'should keep track of bidirectional relations' do
         input = StringIO.new <<-EOS
