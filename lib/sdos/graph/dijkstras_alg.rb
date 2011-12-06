@@ -1,6 +1,10 @@
+require 'sdos/graph/utils'
+
 module Sdos
   module Graph
     class DijkstrasAlg
+
+      include Utils
 
       def initialize(graph, name)
         @graph, @name, @vertex = graph, name, name
@@ -21,7 +25,7 @@ module Sdos
         end
 
         @path_costs.delete(@name)
-        @path_costs
+        @path_costs = reverse_map(@path_costs)
       end
 
       private
@@ -42,16 +46,16 @@ module Sdos
       end
 
       def move_to_nearest_vertex
-        @unvisited.sort do |a, b| 
+        @unvisited.sort do |a, b|
           result = @path_costs[a] <=> @path_costs[b]
           result || -1
         end
         @vertex = @unvisited.shift
       end
-      
+
       def update_adjacent_vertex_path_cost(adjacent_vertex)
         new_path_cost = @path_costs[@vertex] + 1
-        adjacent_cost = @path_costs[adjacent_vertex] 
+        adjacent_cost = @path_costs[adjacent_vertex]
 
         if adjacent_cost.nil?
           @path_costs[adjacent_vertex] = new_path_cost

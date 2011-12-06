@@ -72,8 +72,8 @@ module Sdos
         EOS
         relations = Relations.new(TweetParser.new(input))
 
-        relations.friends('a').should == { 'b' => 1 }
-        relations.friends('b').should == { 'a' => 1 }
+        relations.friends('a').should == { 1 => %w(b) }
+        relations.friends('b').should == { 1 => %w(a) }
       end
       it 'should mention transitive friends' do
         input = StringIO.new <<-EOS
@@ -83,13 +83,13 @@ module Sdos
         EOS
         relations = Relations.new(TweetParser.new(input))
 
-        relations.friends('a').should == { 'b' => 1, 'c' => 1 }
-        relations.friends('b').should == { 'a' => 1, 'c' => 2 }
+        relations.friends('a').should == { 1 => %w(b c) }
+        relations.friends('b').should == { 1 => %w(a), 2 => %w(c) }
       end
       it 'should read input file' do
         File.open(path('sample_input.txt')) do |file|
           relations = Relations.new(TweetParser.new(file))
-          relations.friends('alberta').should == {'bob' => 1, 'christie' => 1, 'duncan' => 2, 'emily' => 2, 'farid' => 3}
+          relations.friends('alberta').should == { 1 => %w(bob christie), 2 => %w(duncan emily), 3 => %w(farid) }
         end
       end
     end

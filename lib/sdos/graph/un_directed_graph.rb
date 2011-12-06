@@ -2,9 +2,13 @@ require 'rgl/adjacency'
 require 'rgl/connected_components'
 require 'rgl/dot'
 
+require 'sdos/graph/utils'
+
 module Sdos
   module Graph
     class UnDirectedGraph
+
+      include Utils
 
       def initialize
         @graph = RGL::DirectedAdjacencyGraph.new
@@ -51,16 +55,6 @@ module Sdos
           end
         end
         unidirectional_edges.each { |e| @graph.remove_edge(*e.to_a) }
-      end
-
-      def reverse_map(map)
-        reversed = {}
-        map.each do |vertex, index|
-          array = reversed[index] || reversed[index] = []
-          array << vertex
-        end
-
-        reversed
       end
 
     end
