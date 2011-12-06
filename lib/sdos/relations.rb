@@ -78,7 +78,20 @@ module Sdos
       lonely_vertices = comp_map.select { |index, array| array.size < 2 }.map { |i, a| a }.flatten
 
       lonely_vertices.each { |v| @relation_graph.remove_vertex(v) }
+      remove_unidirectional_edges
       @relation_graph = @relation_graph.to_undirected
+    end
+    
+    def remove_unidirectional_edges
+      unidirectional_edges = @relation_graph.edges
+      unidirectional_edges.each do |edge|
+        reversed = edge.reverse
+        if unidirectional_edges.include?(reversed)
+          unidirectional_edges.delete(edge)
+          unidirectional_edges.delete(reversed)
+        end
+      end
+      unidirectional_edges.each { |e| @relation_graph.remove_edge(*e.to_a) }
     end
 
     def reverse_map(map)
