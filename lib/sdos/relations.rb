@@ -2,6 +2,8 @@ require 'rgl/adjacency'
 require 'rgl/connected_components'
 require 'rgl/dot'
 
+require 'sdos/dijkstras_alg'
+
 module Sdos
   class Relations
 
@@ -21,35 +23,7 @@ module Sdos
     end
 
     def friends(name)
-      @name = name
-      initialize_visited_unvisited
-      vertex = @name
-
-      until @unvisited.empty? do
-        vertex_cost = @visited[vertex]
-        adjacent = self.[](vertex)
-        adjacent_unvisited = adjacent & @unvisited
-
-        adjacent_unvisited.each do |adjacent_vertex|
-          adjacent_cost = @visited[adjacent_vertex] 
-          new_path_cost = vertex_cost + 1
-          if adjacent_cost.nil?
-            @visited[adjacent_vertex] = new_path_cost
-          elsif adjacent_cost > new_path_cost
-            @visited[adjacent_vertex] = new_path_cost
-          end
-        end
-
-        @unvisited.delete(vertex)
-        @unvisited.sort do |a, b| 
-          result = @visited[a] <=> @visited[b]
-          result || -1
-        end
-        vertex = @unvisited.shift
-      end
-
-      @visited.delete(name)
-      @visited
+      paths = DijkstrasAlg.new(@relation_graph, name).find_shortest_paths
     end
 
     protected
@@ -99,15 +73,6 @@ module Sdos
       reversed
     end
 
-    def initialize_visited_unvisited
-      @visited = {}
-      @visited[@name] = 0
-
-      @unvisited = @relation_graph.to_a
-      @unvisited.delete(@name)
-      @unvisited.each { |v| @visited[v] = nil }
-      @unvisited.unshift(@name)
-    end
 
   end
 end
