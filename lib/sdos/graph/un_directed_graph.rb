@@ -39,6 +39,10 @@ module Sdos
         @graph.to_a
       end
 
+      def each(&block)
+        @graph.each(&block)
+      end
+
       def adjacent_vertices(vertex)
         @graph.adjacent_vertices(vertex)
       end

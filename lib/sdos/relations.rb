@@ -21,7 +21,16 @@ module Sdos
     end
 
     def friends(name)
-      paths = DijkstrasAlg.new(@relation_graph, name).find_shortest_paths
+      DijkstrasAlg.new(@relation_graph, name).find_shortest_paths
+    end
+
+    def relations
+      return @relations if @relations
+
+      @relations = {}
+      @relation_graph.each { |person| @relations[person] = friends(person) }
+
+      @relations
     end
 
   end
