@@ -6,40 +6,32 @@ module Sdos
     end
 
     def find_shortest_paths
-      return @visited if @visited
+      return @path_costs if @path_costs
 
       initialize_visited_unvisited
 
       until @unvisited.empty? do
-        vertex_cost = @visited[@vertex]
-
         adjacent_and_unvisited.each do |adjacent_vertex|
-          adjacent_cost = @visited[adjacent_vertex] 
-          new_path_cost = vertex_cost + 1
-          if adjacent_cost.nil?
-            @visited[adjacent_vertex] = new_path_cost
-          elsif adjacent_cost > new_path_cost
-            @visited[adjacent_vertex] = new_path_cost
-          end
+          update_adjacent_vertex_path_cost(adjacent_vertex)
         end
 
         @unvisited.delete(@vertex)
-        find_nearest_vertex
+        move_to_nearest_vertex
       end
 
-      @visited.delete(@name)
-      @visited
+      @path_costs.delete(@name)
+      @path_costs
     end
 
     private
 
     def initialize_visited_unvisited
-      @visited = {}
-      @visited[@name] = 0
+      @path_costs = {}
+      @path_costs[@name] = 0
 
       @unvisited = @graph.to_a
       @unvisited.delete(@name)
-      @unvisited.each { |v| @visited[v] = nil }
+      @unvisited.each { |v| @path_costs[v] = nil }
       @unvisited.unshift(@name)
     end
 
@@ -48,12 +40,23 @@ module Sdos
       adjacent & @unvisited
     end
 
-    def find_nearest_vertex
+    def move_to_nearest_vertex
       @unvisited.sort do |a, b| 
-        result = @visited[a] <=> @visited[b]
+        result = @path_costs[a] <=> @path_costs[b]
         result || -1
       end
       @vertex = @unvisited.shift
+    end
+    
+    def update_adjacent_vertex_path_cost(adjacent_vertex)
+      new_path_cost = @path_costs[@vertex] + 1
+      adjacent_cost = @path_costs[adjacent_vertex] 
+
+      if adjacent_cost.nil?
+        @path_costs[adjacent_vertex] = new_path_cost
+      elsif adjacent_cost > new_path_cost
+        @path_costs[adjacent_vertex] = new_path_cost
+      end
     end
 
   end
