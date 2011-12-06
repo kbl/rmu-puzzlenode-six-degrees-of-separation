@@ -16,5 +16,16 @@ module Sdos
         stream.string.should == output
       end
     end
+    it 'should pass puzzlenode (:' do
+      pending
+
+      File.open(path('complex_input.txt')) do |file|
+        relations = Relations.new(TweetParser.new(file))
+        stream = StringIO.new
+
+        OutputFormatter.format(relations.relations, stream)
+        puts stream.string
+      end
+    end
   end
 end
