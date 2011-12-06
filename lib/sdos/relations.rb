@@ -21,29 +21,39 @@ module Sdos
     end
 
     def friends(name)
-      visited, unvisited = initialize_visited_unvisited(name)
-      visited[name] = 0
-      vertex = name
+      @name = name
+      initialize_visited_unvisited
+      vertex = @name
 
-      until unvisited.empty? do
-        vertex_cost = visited[vertex]
+      until @unvisited.empty? do
+        vertex_cost = @visited[vertex]
         adjacent = self.[](vertex)
-        adjacent_unvisited = adjacent & unvisited
+        adjacent_unvisited = adjacent & @unvisited
 
         adjacent_unvisited.each do |adjacent_vertex|
-          adjacent_cost = visited[adjacent_vertex] 
+          adjacent_cost = @visited[adjacent_vertex] 
           new_path_cost = vertex_cost + 1
           if adjacent_cost.nil?
-            visited[adjacent_vertex] = new_path_cost
+            @visited[adjacent_vertex] = new_path_cost
           elsif adjacent_cost > new_path_cost
-            visited[adjacent_vertex] = new_path_cost
+            @visited[adjacent_vertex] = new_path_cost
           end
         end
-        unvisited.delete(vertex)
-        p visited
+
+        @unvisited.delete(vertex)
+        p @unvisited
+        @unvisited.sort do |a, b| 
+          a_cost = @visited[a]
+          b_cost = @visited[b]
+          p a_cost
+          p b_cost
+          @visited[a] > @visited[b]
+        end
+        p @unvisited
+        vertex = @unvisited.shift
       end
 
-      visited
+      @visited
     end
 
     protected
@@ -80,15 +90,14 @@ module Sdos
       reversed
     end
 
-    def initialize_visited_unvisited(name)
-      visited = {}
+    def initialize_visited_unvisited
+      @visited = {}
+      @visited[@name] = 0
 
-      unvisited = @relation_graph.to_a
-      unvisited.delete(name)
-      unvisited.each { |v| visited[v] = nil }
-      unvisited.unshift(name)
-
-      [visited, unvisited]
+      @unvisited = @relation_graph.to_a
+      @unvisited.delete(@name)
+      @unvisited.each { |v| @visited[v] = nil }
+      @unvisited.unshift(@name)
     end
 
   end
