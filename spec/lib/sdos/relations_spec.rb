@@ -46,23 +46,21 @@ module Sdos
       end
       it 'shouldnt remove f as its bidirectionally contected with d' do
         input = StringIO.new <<-EOS
-          a: @b
-          b: @a
-          a: @c
-          c: @a @b
-          b: @d @c
-          d: @b
-          a: @d
-          e: @d
-          d: @e
-          c: @e
-          e: @c
-          d: @f
+          a: @b @c @d
+          b: @a @c @d
+          c: @a @b @e
+          d: @b @e @f
+          e: @d @c
           f: @d
         EOS
         relations = Relations.new(TweetParser.new(input))
 
-        relations['d'].should == %(b e f)
+        relations['a'].should == %w(b c)
+        relations['b'].should == %w(a c d)
+        relations['c'].should == %w(a b e)
+        relations['d'].should == %w(b e f)
+        relations['e'].should == %w(c d)
+        relations['f'].should == %w(d)
       end
     end
 
