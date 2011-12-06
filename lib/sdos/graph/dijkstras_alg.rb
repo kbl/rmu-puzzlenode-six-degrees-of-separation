@@ -46,9 +46,14 @@ module Sdos
       end
 
       def move_to_nearest_vertex
-        @unvisited.sort do |a, b|
-          result = @path_costs[a] <=> @path_costs[b]
-          result || -1
+        @unvisited.sort! do |a, b|
+          if @path_costs[a].nil?
+            1
+          elsif @path_costs[b].nil?
+            -1
+          else
+            @path_costs[a] <=> @path_costs[b]
+          end
         end
         @vertex = @unvisited.shift
       end
