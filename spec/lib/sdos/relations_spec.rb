@@ -94,6 +94,20 @@ module Sdos
           relations.friends('farid').should == { 1 => %w(duncan), 2 => %w(bob emily), 3 => %w(alberta christie) }
         end
       end
+      it 'should handle properly multple relation graphs' do
+        input = StringIO.new <<-EOS
+          a: @b
+          b: @a
+          c: @d
+          d: @c
+        EOS
+        relations = Relations.new(TweetParser.new(input))
+
+        relations.friends('a').should == { 1 => %w(b) }
+        relations.friends('b').should == { 1 => %w(a) }
+        relations.friends('c').should == { 1 => %w(d) }
+        relations.friends('d').should == { 1 => %w(c) }
+      end
     end
 
   end
