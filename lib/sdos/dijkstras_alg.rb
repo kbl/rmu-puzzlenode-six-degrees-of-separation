@@ -7,6 +7,8 @@ module Sdos
     end
 
     def find_shortest_paths
+      return @visited if @visited
+
       initialize_visited_unvisited
       vertex = @name
 
@@ -24,11 +26,7 @@ module Sdos
         end
 
         @unvisited.delete(vertex)
-        @unvisited.sort do |a, b| 
-          result = @visited[a] <=> @visited[b]
-          result || -1
-        end
-        vertex = @unvisited.shift
+        vertex = find_nearest_vertex
       end
 
       @visited.delete(@name)
@@ -50,6 +48,14 @@ module Sdos
     def adjacent_and_unvisited(vertex)
       adjacent = @graph.adjacent_vertices(vertex)
       adjacent & @unvisited
+    end
+
+    def find_nearest_vertex
+      @unvisited.sort do |a, b| 
+        result = @visited[a] <=> @visited[b]
+        result || -1
+      end
+      @unvisited.shift
     end
 
   end
