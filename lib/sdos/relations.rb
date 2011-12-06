@@ -13,12 +13,7 @@ module Sdos
       parser.parse do |tweet|
         self.<<(tweet)
       end
-      p '===='
-      p @relation_graph
       keep_only_bidirectional_relations
-      p '----'
-      p @relation_graph
-      p '===='
     end
 
     def [](name)
@@ -84,7 +79,7 @@ module Sdos
     
     def remove_unidirectional_edges
       unidirectional_edges = @relation_graph.edges
-      unidirectional_edges.each do |edge|
+      @relation_graph.edges.each do |edge|
         reversed = edge.reverse
         if unidirectional_edges.include?(reversed)
           unidirectional_edges.delete(edge)
