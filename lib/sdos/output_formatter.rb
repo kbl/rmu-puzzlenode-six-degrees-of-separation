@@ -5,7 +5,7 @@ module Sdos
       all_relations.each do |name, relations|
         stream.puts(name)
         relations.each do |level, friends|
-          stream.puts(level.to_s + ' ' + friends.join(', '))
+          stream.puts(friends.join(', '))
         end
         stream.puts
       end
