@@ -89,7 +89,13 @@ module Sdos
       it 'should read input file' do
         File.open(path('sample_input.txt')) do |file|
           relations = Relations.new(TweetParser.new(file))
+
           relations.friends('alberta').should == { 1 => %w(bob christie), 2 => %w(duncan emily), 3 => %w(farid) }
+          relations.friends('bob').should == { 1 => %w(alberta christie duncan), 2 => %w(emily farid) }
+          relations.friends('christie').should == { 1 => %w(alberta bob emily), 2 => %w(duncan), 3 => %w(farid) }
+          relations.friends('duncan').should == { 1 => %w(bob emily farid), 2 => %w(alberta christie) }
+          relations.friends('emily').should == { 1 => %w(christie duncan), 2 => %w(alberta bob farid) }
+          relations.friends('farid').should == { 1 => %w(duncan), 2 => %w(bob emily), 3 => %w(alberta christie) }
         end
       end
     end
