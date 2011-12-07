@@ -1,0 +1,10 @@
+Six Degrees of Separation
+-------------------------
+
+Solution of #14 problem written with TDD approach using RSpec.
+
+Input files are in spec/ folder. Output file will be generated while executing unit tests:
+
+    $bundle
+    $rspec
+
