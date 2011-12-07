@@ -15,7 +15,7 @@ module Sdos
 
         initialize_visited_unvisited
 
-        until @unvisited.empty? do
+        until @unvisited.empty? || unreachable_subgraph? do
           adjacent_and_unvisited.each do |adjacent_vertex|
             update_adjacent_vertex_path_cost(adjacent_vertex)
           end
@@ -25,6 +25,7 @@ module Sdos
         end
 
         @path_costs.delete(@name)
+        @path_costs.reject! { |k, v| v.nil? }
         @path_costs = reverse_map(@path_costs)
       end
 
@@ -67,6 +68,10 @@ module Sdos
         elsif adjacent_cost > new_path_cost
           @path_costs[adjacent_vertex] = new_path_cost
         end
+      end
+
+      def unreachable_subgraph?
+        @path_costs[@vertex].nil?
       end
 
     end

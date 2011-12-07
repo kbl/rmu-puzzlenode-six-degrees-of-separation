@@ -17,14 +17,11 @@ module Sdos
       end
     end
     it 'should pass puzzlenode (:' do
-      pending
-
       File.open(path('complex_input.txt')) do |file|
         relations = Relations.new(TweetParser.new(file))
-        stream = StringIO.new
-
-        OutputFormatter.format(relations.relations, stream)
-        puts stream.string
+        file = File.new('complex_output.txt', 'w')
+        OutputFormatter.format(relations.relations, file)
+        file.close
       end
     end
   end

@@ -3,6 +3,7 @@ module Sdos
 
     def self.format(all_relations, stream)
       first = true
+      all_relations = all_relations.sort { |(k1, v1), (k2, v2)| k1 <=> k2 }
       all_relations.each do |name, relations|
         relations = relations.sort { |(k1, v1), (k2, v2)| k1 <=> k2 }
 
@@ -12,6 +13,7 @@ module Sdos
 
         stream.puts(name)
         relations.each do |level, friends|
+          friends.sort!
           stream.puts(friends.join(', '))
         end
 
